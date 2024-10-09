@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tỏ Tình</title>
+    <style>
+        /* Định dạng chung cho trang */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            background: url('https://i.imgur.com/kCk0TzG.jpg') no-repeat center center/cover; /* Nền đẹp */
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Màu overlay tối */
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            animation: fadeIn 1s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 0;
+            animation: slideDown 1s ease forwards;
+        }
+
+        p {
+            font-size: 24px;
+            margin: 20px 0;
+            animation: slideUp 1.2s ease forwards;
+        }
+
+        .heart {
+            font-size: 60px;
+            color: red;
+            animation: bounce 1s infinite;
+        }
+
+        .confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .confetti div {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff4081;
+            animation: fall linear infinite;
+            opacity: 0.7;
+        }
+
+        .confetti div:nth-child(1) { background-color: #f44336; }
+        .confetti div:nth-child(2) { background-color: #3f51b5; }
+        .confetti div:nth-child(3) { background-color: #4caf50; }
+        .confetti div:nth-child(4) { background-color: #ffeb3b; }
+        .confetti div:nth-child(5) { background-color: #ff9800; }
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        .btn {
+            text-decoration: none;
+            font-size: 20px;
+            color: white;
+            background-color: #ff4081;
+            padding: 15px 30px;
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: 0 10px;
+            display: inline-block;
+            animation: fadeInButtons 1s ease forwards;
+            animation-delay: 1.5s;
+        }
+
+        .btn:hover {
+            background-color: #e91e63;
+            transform: translateY(-5px);
+        }
+
+        /* Keyframes cho animation */
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        @keyframes fadeInButtons {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="confetti"></div>
+    <div class="container">
+        <h1>Em à!</h1>
+        <p>Anh muốn nói với em rằng:</p>
+        <div class="heart">❤️</div>
+        <h2>Anh yêu em rất nhiều!</h2>
+        <p>Hy vọng sẽ mãi bên nhau nhé!</p>
+        <div class="button-container">
+            <a href="#" class="btn" id="agree-btn">Đồng ý</a>
+            <a href="#" class="btn" id="disagree-btn">Không</a>
+        </div>
+    </div>
+
+    <script>
+        // Hàm tạo confetti
+        function createConfetti() {
+            const confettiContainer = document.querySelector('.confetti');
+            const confettiCount = 100; // Số lượng confetti
+
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.left = Math.random() * 100 + 'vw'; // Vị trí ngẫu nhiên
+                confetti.style.animationDuration = (Math.random() * 3 + 2) + 's'; // Thời gian rơi ngẫu nhiên
+                confetti.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)'; // Xoay ngẫu nhiên
+                confetti.style.opacity = Math.random(); // Độ mờ ngẫu nhiên
+                confettiContainer.appendChild(confetti);
+
+                // Xóa confetti khi nó rơi xuống
+                confetti.addEventListener('animationend', () => {
+                    confettiContainer.removeChild(confetti);
+                });
+            }
+        }
+
+        // Gọi hàm tạo confetti mỗi giây
+        setInterval(createConfetti, 1000);
+
+        // Xử lý sự kiện cho nút Đồng ý
+        document.getElementById('agree-btn').addEventListener('click', () => {
+            alert('Cảm ơn em đã đồng ý! ❤️');
+        });
+
+        // Xử lý sự kiện cho nút Không
+        document.getElementById('disagree-btn').addEventListener('click', () => {
+            const button = document.getElementById('disagree-btn');
+
+            // Di chuyển nút "Không" đến vị trí ngẫu nhiên
+            const randomX = Math.random() * (window.innerWidth - button.offsetWidth);
+            const randomY = Math.random() * (window.innerHeight - button.offsetHeight);
+
+            button.style.position = 'absolute';
+            button.style.left = randomX + 'px';
+            button.style.top = randomY + 'px';
+        });
+    </script>
+</body>
+</html>
